@@ -51,7 +51,7 @@ export function emitCollectionFieldTypesFile(
   return emitMapFile("collectionFieldTypes", entries);
 }
 
-export function emitChromeFieldTypesFile(globals: GlobalsData): string {
+export function emitGlobalFieldTypesFile(globals: GlobalsData): string {
   const entries: [string, unknown][] = globals.globals.map((def) => [def.name, fieldDefsFor(def.fields)]);
-  return emitMapFile("chromeFieldTypes", entries);
+  return emitMapFile("globalFieldTypes", entries);
 }

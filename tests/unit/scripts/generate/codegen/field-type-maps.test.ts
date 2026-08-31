@@ -3,7 +3,7 @@ import { globalsDataSchema } from "#ir/globals.ts";
 import { collectionSchema } from "#ir/schema.ts";
 import {
   emitBlockFieldTypesFile,
-  emitChromeFieldTypesFile,
+  emitGlobalFieldTypesFile,
   emitCollectionFieldTypesFile,
   fieldDefsFor,
 } from "#generate/codegen/field-type-maps.ts";
@@ -55,6 +55,6 @@ describe("emitters", () => {
         },
       ],
     });
-    expect(emitChromeFieldTypesFile(globals)).toContain("export const chromeFieldTypes");
+    expect(emitGlobalFieldTypesFile(globals)).toContain("export const globalFieldTypes");
   });
 });

@@ -1,4 +1,4 @@
-import type { FieldDef, FieldTypeNode } from "../lib/migration/normalize-values.ts";
+import type { FieldDef, FieldTypeNode } from "../lib/normalize-values.ts";
 
 export interface SeedCtx {
   htmlToLexical(html: string): unknown;
@@ -147,4 +147,32 @@ export function parseNdjson(text: string): { meta: Record<string, unknown>; reco
 export function partitionFields(fields: FieldDef[]): { plain: FieldDef[]; refs: FieldDef[] } {
   const isRef = (field: FieldDef): boolean => field.type.type === "reference" || field.type.type === "multiReference";
   return { plain: fields.filter((field) => !isRef(field)), refs: fields.filter(isRef) };
+}
+
+export function refFieldNames(fields: FieldDef[]): string[] {
+  return partitionFields(fields).refs.map((field) => field.name);
+}
+
+export function omitFields(data: Record<string, unknown>, names: string[]): Record<string, unknown> {
+  const omit = new Set(names);
+  return Object.fromEntries(Object.entries(data).filter(([key]) => !omit.has(key)));
+}
+
+export function pageSlugForRoute(route: string): string {
+  const trimmed = route.replace(/^\/+/, "").replace(/\/+$/, "");
+  return trimmed === "" ? "home" : trimmed;
+}
+
+export function pageTitleForRoute(route: string): string {
+  const slug = pageSlugForRoute(route);
+  if (slug === "home") return "Home";
+  const last = slug.split("/").at(-1) ?? slug;
+  const words = last.replace(/[-_]+/g, " ").trim();
+  return words.charAt(0).toUpperCase() + words.slice(1);
+}
+
+export function assertValidCustomId(id: string, label: string): void {
+  if (id === "" || /[/.]/.test(id)) {
+    throw new Error(`${label}: "${id}" cannot be a Payload custom text id (must be non-empty, no "/" or ".")`);
+  }
 }

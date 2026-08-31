@@ -1,3 +1,5 @@
+import { blockComponentName, blockDirName } from "#blocks/codegen/names.ts";
+import { type BlockType } from "#ir/blocks.ts";
 import { type CollectionEntry } from "#ir/collections.ts";
 
 import { collectionSlug, RESERVED_COLLECTION_KEYS } from "./collection-slugs.ts";
@@ -71,6 +73,29 @@ export const ${name}: CollectionConfig = {
     update: or(superAdmin, user),
   },
   ...(${body} as Omit<CollectionConfig, "access">),
+};
+`;
+}
+
+export function emitPagesCollectionFile(blocks: BlockType[]): string {
+  const imports = blocks
+    .map((block) => `import { ${blockComponentName(block.id)} } from "@/blocks/${blockDirName(block.id)}/config";`)
+    .join("\n");
+  const blockNames = blocks.map((block) => blockComponentName(block.id)).join(", ");
+
+  return `import type { CollectionConfig } from "payload";
+
+${imports}
+
+export const PagesCollection: CollectionConfig = {
+  slug: "pages",
+  access: { read: () => true },
+  admin: { useAsTitle: "title" },
+  fields: [
+    { name: "title", type: "text", required: true },
+    { name: "slug", type: "text", required: true, unique: true, index: true },
+    { name: "layout", type: "blocks", blocks: [${blockNames}] },
+  ],
 };
 `;
 }

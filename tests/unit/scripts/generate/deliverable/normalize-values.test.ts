@@ -5,7 +5,7 @@ import {
   normalizeValue,
   type FieldDef,
   type NormalizeCtx,
-} from "#generate/deliverable/lib/migration/normalize-values.ts";
+} from "#generate/deliverable/lib/normalize-values.ts";
 
 const ctx: NormalizeCtx = {};
 
