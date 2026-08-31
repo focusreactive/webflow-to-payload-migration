@@ -18,7 +18,7 @@ async function loadFixtureConfig(): Promise<MigrateConfig> {
 describe("slugFromUrl", () => {
   it("lowercases the host, strips www. and replaces dots with dashes", () => {
     expect(slugFromUrl("https://www.example.com")).toBe("example-com");
-    expect(slugFromUrl("https://demo.webflow.io")).toBe("demo-webflow-io");
+    expect(slugFromUrl("https://example.webflow.io")).toBe("example-webflow-io");
   });
 });
 
@@ -66,7 +66,7 @@ describe("buildRunConfig", () => {
   it("produces a result that passes runConfigSchema", async () => {
     const config = await loadFixtureConfig();
 
-    const result = buildRunConfig({ url: "https://demo.webflow.io" }, config);
+    const result = buildRunConfig({ url: "https://example.webflow.io" }, config);
 
     expect(() => runConfigSchema.parse(result)).not.toThrow();
     const parsed: RunConfig = runConfigSchema.parse(result);
