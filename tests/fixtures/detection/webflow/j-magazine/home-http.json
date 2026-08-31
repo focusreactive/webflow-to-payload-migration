@@ -1,0 +1,25 @@
+{
+  "status": 200,
+  "finalUrl": "https://j-magazine.webflow.io/",
+  "redirectChain": [],
+  "headers": {
+    "age": "343461",
+    "alt-svc": "h3=\":443\"; ma=86400",
+    "cf-cache-status": "HIT",
+    "cf-ray": "a33f77af5b52dbe2-FRA",
+    "connection": "keep-alive",
+    "content-encoding": "gzip",
+    "content-security-policy": "frame-ancestors 'self' https://*.webflow.com http://*.webflow.com http://*.webflow.io http://webflow.com https://webflow.com",
+    "content-type": "text/html; charset=utf-8",
+    "date": "Mon, 31 Aug 2026 22:28:18 GMT",
+    "last-modified": "Mon, 31 Aug 2026 06:58:51 GMT",
+    "server": "cloudflare",
+    "set-cookie": "_cfuvid=OgXPqC0EE1Mo4kmE3i.EBB.f5kG3vHN6bKaq1QKPmrQ-1788215298.4559672-1.0.1.1-zP_4KRSi04LjsM7.tK7Z8PdA0tb9osboSvkmlXQLpGQ; HttpOnly; SameSite=None; Secure; Path=/; Domain=webflow.io",
+    "surrogate-control": "max-age=432000",
+    "surrogate-key": "j-magazine.webflow.io 643eb5ed8b2d3374948f6451 pageId:64518a4dda986453b4dc21ab 64518a4dda9864563edc21af 64518a4dda9864a5c2dc21b1",
+    "transfer-encoding": "chunked",
+    "vary": "accept-encoding",
+    "x-lambda-id": "8b34e871-9b40-47fa-bd19-0811f81345d5",
+    "x-wf-region": "us-east-1"
+  }
+}

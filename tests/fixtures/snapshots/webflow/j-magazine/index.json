@@ -1,0 +1,295 @@
+{
+  "schemaVersion": 2,
+  "entries": {
+    "https://j-magazine.webflow.io/robots.txt": {
+      "url": "https://j-magazine.webflow.io/robots.txt",
+      "kind": "probe",
+      "paths": {
+        "raw": "probe/robots.txt"
+      },
+      "http": {
+        "status": 200,
+        "finalUrl": "https://j-magazine.webflow.io/robots.txt",
+        "redirectChain": [],
+        "contentType": "text/plain; charset=utf-8",
+        "lastModified": "Mon, 31 Aug 2026 20:25:02 GMT"
+      },
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0,
+      "fetchedAt": "2026-08-31T22:29:13.685Z"
+    },
+    "https://j-magazine.webflow.io/": {
+      "url": "https://j-magazine.webflow.io/",
+      "kind": "page",
+      "paths": {
+        "raw": "probe/home.html",
+        "rendered": "probe/index.rendered.html",
+        "styles": "probe/index.styles.json"
+      },
+      "http": {
+        "status": 200,
+        "finalUrl": "https://j-magazine.webflow.io/",
+        "redirectChain": [],
+        "contentType": "text/html; charset=utf-8",
+        "lastModified": "Mon, 31 Aug 2026 06:58:51 GMT"
+      },
+      "sha256": "92e7d08b1abe25f24cc936b5773fde2cfb1829d75f6d42b57181d36859907122",
+      "size": 45461,
+      "fetchedAt": "2026-08-31T22:29:14.127Z"
+    },
+    "https://j-magazine.webflow.io/sitemap.xml": {
+      "url": "https://j-magazine.webflow.io/sitemap.xml",
+      "kind": "probe",
+      "paths": {
+        "raw": "probe/sitemap.xml"
+      },
+      "http": {
+        "status": 404,
+        "finalUrl": "https://j-magazine.webflow.io/sitemap.xml",
+        "redirectChain": [],
+        "contentType": "text/html; charset=utf-8",
+        "etag": "W/\"f88819b783cee260716c82939bdd4aba\"",
+        "lastModified": "Mon, 26 Jan 2026 16:27:45 GMT"
+      },
+      "sha256": "c6d761a720b6135fe7ec482f8d4f131f3908cf7e87c39b448ca05f9e031591e3",
+      "size": 7118,
+      "fetchedAt": "2026-08-31T22:29:14.450Z"
+    },
+    "https://j-magazine.webflow.io/__migration-probe-404__": {
+      "url": "https://j-magazine.webflow.io/__migration-probe-404__",
+      "kind": "probe",
+      "paths": {
+        "raw": "probe/not-found.html"
+      },
+      "http": {
+        "status": 404,
+        "finalUrl": "https://j-magazine.webflow.io/__migration-probe-404__",
+        "redirectChain": [],
+        "contentType": "text/html; charset=utf-8",
+        "etag": "W/\"f88819b783cee260716c82939bdd4aba\"",
+        "lastModified": "Mon, 26 Jan 2026 16:27:45 GMT"
+      },
+      "sha256": "c6d761a720b6135fe7ec482f8d4f131f3908cf7e87c39b448ca05f9e031591e3",
+      "size": 7118,
+      "fetchedAt": "2026-08-31T22:29:14.774Z"
+    },
+    "https://j-magazine.webflow.io/category/television": {
+      "url": "https://j-magazine.webflow.io/category/television",
+      "kind": "page",
+      "paths": {
+        "raw": "pages/category/television/index.html",
+        "rendered": "pages/category/television/index.rendered.html",
+        "styles": "pages/category/television/index.styles.json"
+      },
+      "http": {
+        "status": 200,
+        "finalUrl": "https://j-magazine.webflow.io/category/television",
+        "redirectChain": [],
+        "contentType": "text/html; charset=utf-8",
+        "lastModified": "Mon, 31 Aug 2026 20:23:00 GMT"
+      },
+      "sha256": "a367c4dc2c1ddd43f871142b3bb7fc5ccc8a8dcf2986ff65b9af529be507e104",
+      "size": 19574,
+      "fetchedAt": "2026-08-31T22:29:15.131Z"
+    },
+    "https://j-magazine.webflow.io/category/politics-business": {
+      "url": "https://j-magazine.webflow.io/category/politics-business",
+      "kind": "page",
+      "paths": {
+        "raw": "pages/category/politics-business/index.html",
+        "rendered": "pages/category/politics-business/index.rendered.html",
+        "styles": "pages/category/politics-business/index.styles.json"
+      },
+      "http": {
+        "status": 200,
+        "finalUrl": "https://j-magazine.webflow.io/category/politics-business",
+        "redirectChain": [],
+        "contentType": "text/html; charset=utf-8",
+        "lastModified": "Mon, 31 Aug 2026 20:23:02 GMT"
+      },
+      "sha256": "9790ad90ac39816c5a15b92fab9e1c81584497bcadb6c19bcbe3b1a460c482de",
+      "size": 18588,
+      "fetchedAt": "2026-08-31T22:29:15.460Z"
+    },
+    "https://j-magazine.webflow.io/category/movies": {
+      "url": "https://j-magazine.webflow.io/category/movies",
+      "kind": "page",
+      "paths": {
+        "raw": "pages/category/movies/index.html",
+        "rendered": "pages/category/movies/index.rendered.html",
+        "styles": "pages/category/movies/index.styles.json"
+      },
+      "http": {
+        "status": 200,
+        "finalUrl": "https://j-magazine.webflow.io/category/movies",
+        "redirectChain": [],
+        "contentType": "text/html; charset=utf-8",
+        "lastModified": "Mon, 31 Aug 2026 20:23:04 GMT"
+      },
+      "sha256": "087c40f1634e8df2953e11996b12394b1ee4cfe0be4a8d42f0646a09167c6a42",
+      "size": 18503,
+      "fetchedAt": "2026-08-31T22:29:15.888Z"
+    },
+    "https://j-magazine.webflow.io/category/entertainment": {
+      "url": "https://j-magazine.webflow.io/category/entertainment",
+      "kind": "page",
+      "paths": {
+        "raw": "pages/category/entertainment/index.html",
+        "rendered": "pages/category/entertainment/index.rendered.html",
+        "styles": "pages/category/entertainment/index.styles.json"
+      },
+      "http": {
+        "status": 200,
+        "finalUrl": "https://j-magazine.webflow.io/category/entertainment",
+        "redirectChain": [],
+        "contentType": "text/html; charset=utf-8",
+        "lastModified": "Mon, 31 Aug 2026 21:35:16 GMT"
+      },
+      "sha256": "ae77c98475d37acf704417d91ec13a407e5bfbeff9bb9f3f04fccdbe073700c0",
+      "size": 18441,
+      "fetchedAt": "2026-08-31T22:29:16.218Z"
+    },
+    "https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js": {
+      "url": "https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js",
+      "kind": "script",
+      "paths": {
+        "raw": "scripts/webfont.js"
+      },
+      "http": {
+        "status": 200,
+        "finalUrl": "https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js",
+        "redirectChain": [],
+        "contentType": "text/javascript; charset=UTF-8",
+        "lastModified": "Tue, 03 Mar 2020 19:15:00 GMT"
+      },
+      "sha256": "81016ac6be850b72df5d4faa0c3cec8e2c1b0ba0045712144a6766adfad40bee",
+      "size": 13188,
+      "fetchedAt": "2026-08-31T22:30:12.792Z"
+    },
+    "https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js": {
+      "url": "https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js",
+      "kind": "script",
+      "paths": {
+        "raw": "scripts/lenis.min.js"
+      },
+      "http": {
+        "status": 200,
+        "finalUrl": "https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js",
+        "redirectChain": [],
+        "contentType": "application/javascript; charset=utf-8",
+        "etag": "W/\"2d73-q6rhW/vuRefXBo9ldNaXk8tLoTA\""
+      },
+      "sha256": "7949f2d87aa5eaa05baa6ba843ad2eeae786d9e09954a41a1b282ac023eabae8",
+      "size": 11635,
+      "fetchedAt": "2026-08-31T22:30:13.280Z"
+    },
+    "https://cdn.prod.website-files.com/643eb5ed8b2d3374948f6451/css/j-magazine.webflow.shared.3dcd46d1d.css": {
+      "url": "https://cdn.prod.website-files.com/643eb5ed8b2d3374948f6451/css/j-magazine.webflow.shared.3dcd46d1d.css",
+      "kind": "style",
+      "paths": {
+        "raw": "styles/j-magazine.webflow.shared.3dcd46d1d.css"
+      },
+      "http": {
+        "status": 200,
+        "finalUrl": "https://cdn.prod.website-files.com/643eb5ed8b2d3374948f6451/css/j-magazine.webflow.shared.3dcd46d1d.css",
+        "redirectChain": [],
+        "contentType": "text/css",
+        "etag": "W/\"8a0eb8c78107300633b81ce44553363b\"",
+        "lastModified": "Mon, 26 Jan 2026 16:27:45 GMT"
+      },
+      "sha256": "cd16aacb93a0c616f718c3414f8a489f9f02027459b9f900fd3ef7ad2059b176",
+      "size": 104001,
+      "fetchedAt": "2026-08-31T22:30:13.798Z"
+    },
+    "https://cdn.prod.website-files.com/643eb5ed8b2d3374948f6451/js/webflow.94b339a6.3860077135fd0abd.js": {
+      "url": "https://cdn.prod.website-files.com/643eb5ed8b2d3374948f6451/js/webflow.94b339a6.3860077135fd0abd.js",
+      "kind": "script",
+      "paths": {
+        "raw": "scripts/webflow.94b339a6.3860077135fd0abd.js"
+      },
+      "http": {
+        "status": 200,
+        "finalUrl": "https://cdn.prod.website-files.com/643eb5ed8b2d3374948f6451/js/webflow.94b339a6.3860077135fd0abd.js",
+        "redirectChain": [],
+        "contentType": "text/javascript",
+        "etag": "W/\"3e60f0fdd70d8da95013a67525946f1b\"",
+        "lastModified": "Mon, 26 Jan 2026 16:27:45 GMT"
+      },
+      "sha256": "557e7566b575746d7fb27f459adc5cddb108742f37dc77347411bacca57d95b7",
+      "size": 1085,
+      "fetchedAt": "2026-08-31T22:30:14.117Z"
+    },
+    "https://cdn.prod.website-files.com/643eb5ed8b2d3374948f6451/js/webflow.c165df5f.5acccad554c7a04b.js": {
+      "url": "https://cdn.prod.website-files.com/643eb5ed8b2d3374948f6451/js/webflow.c165df5f.5acccad554c7a04b.js",
+      "kind": "script",
+      "paths": {
+        "raw": "scripts/webflow.c165df5f.5acccad554c7a04b.js"
+      },
+      "http": {
+        "status": 200,
+        "finalUrl": "https://cdn.prod.website-files.com/643eb5ed8b2d3374948f6451/js/webflow.c165df5f.5acccad554c7a04b.js",
+        "redirectChain": [],
+        "contentType": "text/javascript",
+        "etag": "W/\"76b40e79fdbfa2c6a2d8be2a72f4f3be\"",
+        "lastModified": "Mon, 26 Jan 2026 16:27:45 GMT"
+      },
+      "sha256": "f4a7348e03a1f7de8acdfb9b0e85a220452d2ddd9a710fcdaf945c80c79606f0",
+      "size": 106379,
+      "fetchedAt": "2026-08-31T22:30:14.470Z"
+    },
+    "https://cdn.prod.website-files.com/643eb5ed8b2d3374948f6451/js/webflow.schunk.1579853893c68c01.js": {
+      "url": "https://cdn.prod.website-files.com/643eb5ed8b2d3374948f6451/js/webflow.schunk.1579853893c68c01.js",
+      "kind": "script",
+      "paths": {
+        "raw": "scripts/webflow.schunk.1579853893c68c01.js"
+      },
+      "http": {
+        "status": 200,
+        "finalUrl": "https://cdn.prod.website-files.com/643eb5ed8b2d3374948f6451/js/webflow.schunk.1579853893c68c01.js",
+        "redirectChain": [],
+        "contentType": "text/javascript",
+        "etag": "W/\"fd0bf08a50aef8d30a6e29e495f773cc\"",
+        "lastModified": "Mon, 26 Jan 2026 16:27:45 GMT"
+      },
+      "sha256": "197fc90fbe36fa441366469c8d39397bf42a6127b53df01a8dd680b888574cfe",
+      "size": 52408,
+      "fetchedAt": "2026-08-31T22:30:14.905Z"
+    },
+    "https://cdn.prod.website-files.com/643eb5ed8b2d3374948f6451/js/webflow.schunk.36b8fb49256177c8.js": {
+      "url": "https://cdn.prod.website-files.com/643eb5ed8b2d3374948f6451/js/webflow.schunk.36b8fb49256177c8.js",
+      "kind": "script",
+      "paths": {
+        "raw": "scripts/webflow.schunk.36b8fb49256177c8.js"
+      },
+      "http": {
+        "status": 200,
+        "finalUrl": "https://cdn.prod.website-files.com/643eb5ed8b2d3374948f6451/js/webflow.schunk.36b8fb49256177c8.js",
+        "redirectChain": [],
+        "contentType": "text/javascript",
+        "etag": "W/\"6d1d67fe2715f25c2fd98a9011d8ea67\"",
+        "lastModified": "Mon, 26 Jan 2026 16:27:45 GMT"
+      },
+      "sha256": "8b7d0de9f3df9103d70ed000c17b348240623ac4e4053d56fa0d5cfd8d74d79d",
+      "size": 41429,
+      "fetchedAt": "2026-08-31T22:30:15.234Z"
+    },
+    "https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=643eb5ed8b2d3374948f6451": {
+      "url": "https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=643eb5ed8b2d3374948f6451",
+      "kind": "script",
+      "paths": {
+        "raw": "scripts/jquery-3.5.1.min.dc5e7f18c8.js"
+      },
+      "http": {
+        "status": 200,
+        "finalUrl": "https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=643eb5ed8b2d3374948f6451",
+        "redirectChain": [],
+        "contentType": "application/javascript",
+        "etag": "W/\"dc5e7f18c8d36ac1d3d4753a87c98d0a\"",
+        "lastModified": "Mon, 20 Jul 2020 17:53:02 GMT"
+      },
+      "sha256": "f7f6a5894f1d19ddad6fa392b2ece2c5e578cbf7da4ea805b6885eb6985b6e3d",
+      "size": 89476,
+      "fetchedAt": "2026-08-31T22:30:15.714Z"
+    }
+  }
+}

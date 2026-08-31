@@ -1,0 +1,261 @@
+{
+  "pages": [
+    {
+      "route": "/",
+      "kind": "static",
+      "sources": [
+        "crawl"
+      ]
+    },
+    {
+      "route": "/401",
+      "kind": "static",
+      "sources": [
+        "crawl"
+      ]
+    },
+    {
+      "route": "/404",
+      "kind": "static",
+      "sources": [
+        "crawl"
+      ]
+    },
+    {
+      "route": "/admin/licenses",
+      "kind": "static",
+      "sources": [
+        "crawl"
+      ]
+    },
+    {
+      "route": "/admin/style-guide",
+      "kind": "static",
+      "sources": [
+        "crawl"
+      ]
+    },
+    {
+      "route": "/category/entertainment",
+      "kind": "item",
+      "collectionKey": "64518a4dda9864a5c2dc21b1",
+      "slug": "entertainment",
+      "sources": [
+        "crawl"
+      ]
+    },
+    {
+      "route": "/category/movies",
+      "kind": "item",
+      "collectionKey": "64518a4dda9864a5c2dc21b1",
+      "slug": "movies",
+      "sources": [
+        "crawl"
+      ]
+    },
+    {
+      "route": "/category/music",
+      "kind": "item",
+      "collectionKey": "64518a4dda9864a5c2dc21b1",
+      "slug": "music",
+      "sources": [
+        "crawl"
+      ]
+    },
+    {
+      "route": "/category/politics-business",
+      "kind": "item",
+      "collectionKey": "64518a4dda9864a5c2dc21b1",
+      "slug": "politics-business",
+      "sources": [
+        "crawl"
+      ]
+    },
+    {
+      "route": "/category/sports",
+      "kind": "item",
+      "collectionKey": "64518a4dda9864a5c2dc21b1",
+      "slug": "sports",
+      "sources": [
+        "crawl"
+      ]
+    },
+    {
+      "route": "/category/television",
+      "kind": "item",
+      "collectionKey": "64518a4dda9864a5c2dc21b1",
+      "slug": "television",
+      "sources": [
+        "crawl"
+      ]
+    },
+    {
+      "route": "/pages/about-us",
+      "kind": "static",
+      "sources": [
+        "crawl"
+      ]
+    },
+    {
+      "route": "/pages/all-articles",
+      "kind": "static",
+      "sources": [
+        "crawl"
+      ]
+    },
+    {
+      "route": "/pages/contact-us",
+      "kind": "static",
+      "sources": [
+        "crawl"
+      ]
+    },
+    {
+      "route": "/post/10-movies-coming-to-tv-this-spring",
+      "kind": "item",
+      "collectionKey": "64518a4dda9864563edc21af",
+      "slug": "10-movies-coming-to-tv-this-spring",
+      "sources": [
+        "crawl"
+      ]
+    },
+    {
+      "route": "/post/10-questions-with-major-time-actor-paul-newton",
+      "kind": "item",
+      "collectionKey": "64518a4dda9864563edc21af",
+      "slug": "10-questions-with-major-time-actor-paul-newton",
+      "sources": [
+        "crawl"
+      ]
+    },
+    {
+      "route": "/post/10-tips-for-becoming-a-great-director",
+      "kind": "item",
+      "collectionKey": "64518a4dda9864563edc21af",
+      "slug": "10-tips-for-becoming-a-great-director",
+      "sources": [
+        "crawl"
+      ]
+    },
+    {
+      "route": "/post/5-methods-you-can-use-to-make-money-online",
+      "kind": "item",
+      "collectionKey": "64518a4dda9864563edc21af",
+      "slug": "5-methods-you-can-use-to-make-money-online",
+      "sources": [
+        "crawl"
+      ]
+    },
+    {
+      "route": "/post/5-shows-with-excellent-plots",
+      "kind": "item",
+      "collectionKey": "64518a4dda9864563edc21af",
+      "slug": "5-shows-with-excellent-plots",
+      "sources": [
+        "crawl"
+      ]
+    },
+    {
+      "route": "/post/6-fun-activities-to-do-while-camping",
+      "kind": "item",
+      "collectionKey": "64518a4dda9864563edc21af",
+      "slug": "6-fun-activities-to-do-while-camping",
+      "sources": [
+        "crawl"
+      ]
+    },
+    {
+      "route": "/post/golf-tips-for-beginners",
+      "kind": "item",
+      "collectionKey": "64518a4dda9864563edc21af",
+      "slug": "golf-tips-for-beginners",
+      "sources": [
+        "crawl"
+      ]
+    },
+    {
+      "route": "/post/jane-smith-talks-new-music-and-upcoming-tour",
+      "kind": "item",
+      "collectionKey": "64518a4dda9864563edc21af",
+      "slug": "jane-smith-talks-new-music-and-upcoming-tour",
+      "sources": [
+        "crawl"
+      ]
+    },
+    {
+      "route": "/post/jerry-loan-on-what-it-was-like-working-with-mike-crystal",
+      "kind": "item",
+      "collectionKey": "64518a4dda9864563edc21af",
+      "slug": "jerry-loan-on-what-it-was-like-working-with-mike-crystal",
+      "sources": [
+        "crawl"
+      ]
+    },
+    {
+      "route": "/post/rob-smith-on-his-new-upcoming-movie-christy",
+      "kind": "item",
+      "collectionKey": "64518a4dda9864563edc21af",
+      "slug": "rob-smith-on-his-new-upcoming-movie-christy",
+      "sources": [
+        "crawl"
+      ]
+    },
+    {
+      "route": "/post/tips-for-managing-a-diverse-employee-population",
+      "kind": "item",
+      "collectionKey": "64518a4dda9864563edc21af",
+      "slug": "tips-for-managing-a-diverse-employee-population",
+      "sources": [
+        "crawl"
+      ]
+    },
+    {
+      "route": "/post/top-5-best-movie-villains-ever",
+      "kind": "item",
+      "collectionKey": "64518a4dda9864563edc21af",
+      "slug": "top-5-best-movie-villains-ever",
+      "sources": [
+        "crawl"
+      ]
+    },
+    {
+      "route": "/post/top-5-fastest-growing-companies-in-2023",
+      "kind": "item",
+      "collectionKey": "64518a4dda9864563edc21af",
+      "slug": "top-5-fastest-growing-companies-in-2023",
+      "sources": [
+        "crawl"
+      ]
+    },
+    {
+      "route": "/post/top-6-streaming-services-in-2023",
+      "kind": "item",
+      "collectionKey": "64518a4dda9864563edc21af",
+      "slug": "top-6-streaming-services-in-2023",
+      "sources": [
+        "crawl"
+      ]
+    },
+    {
+      "route": "/post/what-to-wear-to-an-escape-room",
+      "kind": "item",
+      "collectionKey": "64518a4dda9864563edc21af",
+      "slug": "what-to-wear-to-an-escape-room",
+      "sources": [
+        "crawl"
+      ]
+    }
+  ],
+  "collections": [
+    {
+      "key": "64518a4dda9864563edc21af",
+      "routePattern": "/post/:slug",
+      "itemCount": 15
+    },
+    {
+      "key": "64518a4dda9864a5c2dc21b1",
+      "routePattern": "/category/:slug",
+      "itemCount": 6
+    }
+  ]
+}

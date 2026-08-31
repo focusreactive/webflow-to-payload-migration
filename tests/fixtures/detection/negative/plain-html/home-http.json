@@ -1,0 +1,6 @@
+{
+  "status": 200,
+  "finalUrl": "https://example.test/",
+  "redirectChain": [],
+  "headers": { "content-type": "text/html; charset=utf-8" }
+}
