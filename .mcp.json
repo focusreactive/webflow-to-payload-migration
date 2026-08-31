@@ -1,0 +1,79 @@
+{
+  "mcpServers": {
+    "pw-1": {
+      "command": "npx",
+      "args": [
+        "@playwright/mcp@0.0.41",
+        "--headless",
+        "--isolated",
+        "--caps=vision",
+        "--image-responses=omit",
+        "--viewport-size=1440,900",
+        "--allowed-origins=localhost;localhost:*",
+        "--output-dir=./.shots/1",
+        "--user-data-dir=./.pw/1",
+        "--config=./playwright-mcp.json"
+      ]
+    },
+    "pw-2": {
+      "command": "npx",
+      "args": [
+        "@playwright/mcp@0.0.41",
+        "--headless",
+        "--isolated",
+        "--caps=vision",
+        "--image-responses=omit",
+        "--viewport-size=1440,900",
+        "--allowed-origins=localhost;localhost:*",
+        "--output-dir=./.shots/2",
+        "--user-data-dir=./.pw/2",
+        "--config=./playwright-mcp.json"
+      ]
+    },
+    "pw-3": {
+      "command": "npx",
+      "args": [
+        "@playwright/mcp@0.0.41",
+        "--headless",
+        "--isolated",
+        "--caps=vision",
+        "--image-responses=omit",
+        "--viewport-size=1440,900",
+        "--allowed-origins=localhost;localhost:*",
+        "--output-dir=./.shots/3",
+        "--user-data-dir=./.pw/3",
+        "--config=./playwright-mcp.json"
+      ]
+    },
+    "pw-4": {
+      "command": "npx",
+      "args": [
+        "@playwright/mcp@0.0.41",
+        "--headless",
+        "--isolated",
+        "--caps=vision",
+        "--image-responses=omit",
+        "--viewport-size=1440,900",
+        "--allowed-origins=localhost;localhost:*",
+        "--output-dir=./.shots/4",
+        "--user-data-dir=./.pw/4",
+        "--config=./playwright-mcp.json"
+      ]
+    },
+    "pw-5": {
+      "command": "npx",
+      "args": [
+        "@playwright/mcp@0.0.41",
+        "--headless",
+        "--isolated",
+        "--caps=vision",
+        "--image-responses=omit",
+        "--viewport-size=1440,900",
+        "--allowed-origins=localhost;localhost:*",
+        "--output-dir=./.shots/5",
+        "--user-data-dir=./.pw/5",
+        "--config=./playwright-mcp.json"
+      ]
+    }
+  }
+}

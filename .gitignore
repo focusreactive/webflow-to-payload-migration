@@ -1,0 +1,18 @@
+docs/
+node_modules/
+.env
+*.log
+
+.shots/
+.pw/
+.cache/
+
+demo/.migration/snapshot/
+demo/.migration/artifacts/stitch/
+demo/.migration/artifacts/synth/
+demo/node_modules/
+demo/.next/
+demo/*.db
+
+# Scratch dirs created and removed by tests/unit/scripts/generate/deliverable-typecheck.test.ts
+.tmp-deliverable-typecheck-*/

@@ -1,0 +1,6 @@
+{
+  "browser": {
+    "launchOptions": { "args": ["--force-color-profile=srgb", "--disable-lcd-text"] },
+    "contextOptions": { "deviceScaleFactor": 1, "reducedMotion": "reduce" }
+  }
+}
