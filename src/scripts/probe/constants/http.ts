@@ -1,0 +1,1 @@
+export const HTTP_ERROR_STATUS_THRESHOLD = 400;
