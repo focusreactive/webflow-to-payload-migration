@@ -1,0 +1,7 @@
+{
+  "$schema": "./schemas/migrate.config.schema.json",
+
+  "workspace": {
+    "path": "../migrations"
+  }
+}
