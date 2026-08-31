@@ -44,13 +44,12 @@ export async function readManifest(projectPath: string): Promise<Manifest> {
 
 export async function initManifest(
   projectPath: string,
-  init: { toolVersion: string; sourceUrl: string; localOnly: boolean },
+  init: { toolVersion: string; sourceUrl: string },
 ): Promise<void> {
   await writeManifest(projectPath, {
     schemaVersion: MANIFEST_SCHEMA_VERSION,
     toolVersion: init.toolVersion,
     sourceUrl: init.sourceUrl,
-    localOnly: init.localOnly,
     steps: {},
   });
 }

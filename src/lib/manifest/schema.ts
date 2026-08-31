@@ -25,7 +25,6 @@ export const manifestSchema = z.strictObject({
   schemaVersion: z.literal(MANIFEST_SCHEMA_VERSION),
   toolVersion: z.string(),
   sourceUrl: z.string(),
-  localOnly: z.boolean(),
   steps: z.record(z.string(), stepRecordSchema),
 });
 export type Manifest = z.infer<typeof manifestSchema>;

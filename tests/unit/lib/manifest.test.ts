@@ -17,7 +17,6 @@ import { MANIFEST_SCHEMA_VERSION } from "#lib/manifest/schema.ts";
 const INIT = {
   toolVersion: "0.1.0",
   sourceUrl: "https://example.com",
-  localOnly: false,
 };
 
 describe("manifest", () => {
