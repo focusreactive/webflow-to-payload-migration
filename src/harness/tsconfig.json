@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "lib": ["es2023", "dom", "dom.iterable"],
+    "types": ["node", "vite/client"],
+    "module": "preserve",
+    "moduleResolution": "bundler",
+    "noEmit": true
+  },
+  "include": ["block-preview/**/*.ts", "block-preview/**/*.tsx"],
+  "exclude": ["node_modules"]
+}

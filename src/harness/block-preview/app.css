@@ -1,0 +1,12 @@
+@import "tailwindcss";
+@import "#site-theme";
+@import "#site-fonts";
+
+@source "__PROJECT_SYNTH__/**/*.tsx";
+
+/* The reference crop is cut out of the real page, so an entity that does not
+   fill its own box shows the site's ground around it. The preview has to stand
+   on the same ground or every gap reads as a pixel difference. */
+body {
+  background-color: var(--color-surface, #fff);
+}

@@ -28,7 +28,7 @@
     "#tokens/*": "./src/scripts/tokens/*"
   },
   "scripts": {
-    "typecheck": "tsc --noEmit -p . && tsc --noEmit -p tests",
+    "typecheck": "tsc --noEmit -p . && tsc --noEmit -p tests && tsc --noEmit -p src/harness",
     "lint": "eslint .",
     "format": "prettier --write .",
     "test": "vitest run --passWithNoTests",
