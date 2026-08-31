@@ -1,0 +1,1 @@
+export const DOWNSCALE_LONG_SIDE = 1568;
