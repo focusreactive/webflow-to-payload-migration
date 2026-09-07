@@ -19,7 +19,6 @@ describe("normalizeValue", () => {
     expect(normalizeValue({ type: "video" }, { id: "a2", url: "/api/media/file/hero.mp4" }, ctx)).toEqual({
       src: "/api/media/file/hero.mp4",
     });
-    // Unpopulated (string id) uploads cannot be resolved to a URL at render time.
     expect(normalizeValue({ type: "image" }, "a1", ctx)).toBeUndefined();
   });
 
@@ -29,8 +28,6 @@ describe("normalizeValue", () => {
     expect(normalizeValue({ type: "richText" }, null, ctx)).toBeUndefined();
   });
 
-  // Docs carry Payload's own id, so a populated relationship yields its slug — the human-readable
-  // key components build hrefs from. Only an unpopulated one falls back to the raw id.
   it("maps relationships to slugs whether populated or not", () => {
     expect(normalizeValue({ type: "reference", collectionKey: "works" }, { id: 7, slug: "alpha" }, ctx)).toBe("alpha");
     expect(normalizeValue({ type: "reference", collectionKey: "works" }, "alpha", ctx)).toBe("alpha");
@@ -51,9 +48,9 @@ describe("normalizeValue", () => {
         ],
       },
     };
-    expect(
-      normalizeValue(faq, [{ id: "row1", item: { q: "Q1", a: { root: {} } } }], ctx),
-    ).toEqual([{ q: "Q1", a: { root: {} } }]);
+    expect(normalizeValue(faq, [{ id: "row1", item: { q: "Q1", a: { root: {} } } }], ctx)).toEqual([
+      { q: "Q1", a: { root: {} } },
+    ]);
   });
 
   it("passes scalars and option values through", () => {

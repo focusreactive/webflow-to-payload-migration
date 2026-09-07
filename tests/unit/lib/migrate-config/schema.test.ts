@@ -19,7 +19,6 @@ describe("migrateConfigSchema", () => {
       "github",
       "neon",
       "vercel",
-      "idealCms",
       "verification",
       "snapshot",
       "capture",

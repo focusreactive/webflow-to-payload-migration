@@ -25,12 +25,10 @@ describe("seed/index.ts.tpl", () => {
     for (const collection of ["users", "media", "pages"]) {
       expect(source, collection).toContain(`collection: "${collection}"`);
     }
-    expect(source).toContain("await payload.find({ collection: \"users\"");
-    expect(source).toContain('where: { slug: { equals: slug } }');
+    expect(source).toContain('await payload.find({ collection: "users"');
+    expect(source).toContain("where: { slug: { equals: slug } }");
   });
 
-  // The IR stores a relationship as the target item's migration key, which only pass 1 can turn
-  // into a doc id — so references are written in a second pass over what pass 1 recorded.
   it("resolves references in a second pass over the ids pass 1 recorded", async () => {
     const source = await readTemplate("seed/index.ts.tpl");
     const pass1At = source.indexOf("await seedItemsPass1(");

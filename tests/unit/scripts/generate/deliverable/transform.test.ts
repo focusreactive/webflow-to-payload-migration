@@ -17,8 +17,6 @@ const ctx: SeedCtx = {
 };
 
 describe("payloadValueFor", () => {
-  // Media is a base collection with an auto-increment id, so the migration's assetId is never the
-  // doc id — the upload value has to be whatever id seedMedia created for that asset.
   it("maps MediaRef literals to the seeded media doc id", () => {
     expect(payloadValueFor({ type: "image" }, { assetId: "a1f2a3b4c5d6e7f8", alt: "x" }, ctx)).toBe(42);
     expect(payloadValueFor({ type: "video" }, { assetId: "a1f2a3b4c5d6e7f8" }, ctx)).toBe(42);
@@ -26,7 +24,11 @@ describe("payloadValueFor", () => {
 
   it("leaves an upload field empty and warns when the asset has no media doc", () => {
     const warnings: string[] = [];
-    const value = payloadValueFor({ type: "image" }, { assetId: "ffffffffffffffff" }, { ...ctx, warn: (m) => warnings.push(m) });
+    const value = payloadValueFor(
+      { type: "image" },
+      { assetId: "ffffffffffffffff" },
+      { ...ctx, warn: (m) => warnings.push(m) },
+    );
     expect(value).toBeUndefined();
     expect(warnings).toHaveLength(1);
   });
@@ -49,8 +51,6 @@ describe("payloadValueFor", () => {
     expect(payloadValueFor(faq, [{ q: "Q1" }], ctx)).toEqual([{ item: { q: "Q1" } }]);
   });
 
-  // Migrated collections have no custom id: an IR reference carries the migration item key, so
-  // the seed has to swap it for the doc id Payload assigned in pass 1.
   it("resolves references to the seeded doc ids and keeps scalars as-is", () => {
     expect(payloadValueFor({ type: "reference", collectionKey: "works" }, "alpha", ctx)).toBe(7);
     expect(payloadValueFor({ type: "multiReference", collectionKey: "works" }, ["alpha"], ctx)).toEqual([7]);
@@ -61,7 +61,9 @@ describe("payloadValueFor", () => {
     const warnings: string[] = [];
     const warn = (message: string): void => void warnings.push(message);
     expect(payloadValueFor({ type: "reference", collectionKey: "works" }, "ghost", { ...ctx, warn })).toBeUndefined();
-    expect(payloadValueFor({ type: "multiReference", collectionKey: "works" }, ["alpha", "ghost"], { ...ctx, warn })).toEqual([7]);
+    expect(
+      payloadValueFor({ type: "multiReference", collectionKey: "works" }, ["alpha", "ghost"], { ...ctx, warn }),
+    ).toEqual([7]);
     expect(warnings).toHaveLength(2);
   });
 });
@@ -101,14 +103,9 @@ describe("ndjson + helpers", () => {
 
   it("collects referenced asset ids and img urls", () => {
     expect(
-      collectAssetIdsFromValue(
-        { type: "array", element: { type: "image" } },
-        [{ assetId: "a1f2a3b4c5d6e7f8" }],
-      ),
+      collectAssetIdsFromValue({ type: "array", element: { type: "image" } }, [{ assetId: "a1f2a3b4c5d6e7f8" }]),
     ).toEqual(["a1f2a3b4c5d6e7f8"]);
-    expect(collectAssetIdsFromValue({ type: "video" }, { assetId: "a1f2a3b4c5d6e7f8" })).toEqual([
-      "a1f2a3b4c5d6e7f8",
-    ]);
+    expect(collectAssetIdsFromValue({ type: "video" }, { assetId: "a1f2a3b4c5d6e7f8" })).toEqual(["a1f2a3b4c5d6e7f8"]);
     expect(collectImgUrls('<img src="https://x/1.png"><img src="https://x/2.png">')).toEqual([
       "https://x/1.png",
       "https://x/2.png",

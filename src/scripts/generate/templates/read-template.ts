@@ -4,10 +4,6 @@ import { fileURLToPath } from "node:url";
 
 const templatesDir = dirname(fileURLToPath(import.meta.url));
 
-// A dropped token would otherwise reach the deliverable as the raw slot text, where it parses as
-// a bare identifier and survives until the deliverable's own typecheck. Every `__NAME__`-shaped
-// string in every template is a slot this module substitutes (verified by grep), so the generic
-// shape is safe to reject wholesale.
 const UNSUBSTITUTED_SLOT = /__[A-Z][A-Z0-9_]*__/;
 
 export async function readTemplate(relativePath: string, tokens?: Record<string, string>): Promise<string> {

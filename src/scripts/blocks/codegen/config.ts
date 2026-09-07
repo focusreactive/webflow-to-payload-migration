@@ -1,5 +1,6 @@
 import { blockComponentName } from "#blocks/codegen/names.ts";
-import { payloadField, type SlugResolver } from "#generate/codegen/fields.ts";
+import { payloadField } from "#generate/payload-field.ts";
+import { type SlugResolver } from "#generate/types.ts";
 import { type BlockType } from "#ir/blocks.ts";
 
 export function emitBlockConfig(block: BlockType, slugFor: SlugResolver = (key) => key, previewUrl?: string): string {

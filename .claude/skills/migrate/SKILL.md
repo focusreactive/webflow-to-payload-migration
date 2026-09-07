@@ -57,7 +57,7 @@ Phases, in the order the skill runs them:
 | `discovery`     | `phases/discovery/PHASE.md`     |
 | `synth`         | `phases/synth/PHASE.md`         |
 | `layout`        | `phases/layout/PHASE.md`        |
-| `generate`      | `references/generate.md`        |
+| `generate`      | `phases/generate/PHASE.md`      |
 
 ## Determining the next step
 

@@ -1,0 +1,15 @@
+export const RESERVED_COLLECTION_KEYS: ReadonlySet<string> = new Set([
+  "page",
+  "pages",
+  "media",
+  "users",
+  "header",
+  "footer",
+  "globalBlock",
+  "redirects",
+  "presets",
+  "comments",
+  "comment-reads",
+  "ab-experiments",
+  "payload-mcp-api-keys",
+]);
