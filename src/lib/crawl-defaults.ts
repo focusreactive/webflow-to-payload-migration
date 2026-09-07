@@ -1,5 +1,3 @@
-// Was migrate.config.snapshot in the private tool. Four phases fetch over HTTP with these
-// same knobs, so they live in lib rather than in any one phase's directory.
 export const MAX_PAGES = 500;
 export const CONCURRENCY = 4;
 export const REQUEST_DELAY_MS = 250;

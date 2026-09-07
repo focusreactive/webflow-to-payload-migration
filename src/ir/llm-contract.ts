@@ -1,8 +1,5 @@
 import { z } from "zod";
 
-// JSON-schema keywords Anthropic structured output rejects with a 400 and
-// OpenAI-strict silently ignores (P1). Validation still happens at ingest
-// with the full Zod schema; the LLM contract is a lossy projection.
 const STRIPPED_CONSTRAINT_KEYWORDS = [
   "pattern",
   "format",

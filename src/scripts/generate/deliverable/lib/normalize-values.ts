@@ -98,7 +98,5 @@ export function normalizeDoc(fields: FieldDef[], doc: Record<string, unknown>, c
 }
 
 export function normalizeProps<TProps>(fields: FieldDef[], record: Record<string, unknown>, ctx: NormalizeCtx): TProps {
-  // Field defs and TProps are generated from the same IR entry, so they agree by
-  // construction; this is the single seam where the dynamic shape becomes typed.
   return normalizeRecord(fields, record, ctx) as TProps;
 }

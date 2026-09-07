@@ -1,9 +1,3 @@
-/* Migration seed (generated). Run once from the deliverable root:
- *   pnpm seed
- * Reads the migration IR from .migration/ (the tool's Tier-1 working dir),
- * so it is an OPERATOR step — a cloned repo without .migration/ cannot re-run
- * it (structural regeneration uses migration/ir instead).
- */
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 
@@ -86,8 +80,6 @@ function literalOnly(fields: Record<string, LayoutSource>): Record<string, unkno
   return out;
 }
 
-// ---------- referenced-asset collection ----------
-
 function referencedAssetIds(opts: {
   collections: CollectionDef[];
   contentByCollection: Map<string, Record<string, unknown>[]>;
@@ -129,8 +121,6 @@ function referencedAssetIds(opts: {
   return ids;
 }
 
-// ---------- seed passes ----------
-
 async function seedAdmin(payload: Payload): Promise<void> {
   const email = process.env.PAYLOAD_ADMIN_EMAIL;
   const password = process.env.PAYLOAD_ADMIN_PASSWORD;
@@ -141,9 +131,6 @@ async function seedAdmin(payload: Payload): Promise<void> {
   }
 }
 
-// Media docs carry no custom id — Payload owns it — so a re-run recognises an already-seeded
-// asset by the uploaded file's own name, and returns the migration assetId -> doc id map every
-// later pass (richText <img> rewriting, upload fields) resolves through.
 async function seedMedia(
   payload: Payload,
   assets: AssetRecord[],
@@ -180,7 +167,6 @@ async function seedMedia(
   return count;
 }
 
-// A relationship write deferred until every item across every collection has a doc id.
 interface PendingRefs {
   collection: string;
   docId: string | number;
@@ -188,9 +174,6 @@ interface PendingRefs {
   record: Record<string, unknown>;
 }
 
-// Items carry no custom id either — Payload owns the doc id — so a re-run recognises an item by
-// the slug its detail route is built on, and pass 1 records the doc id each migration id
-// resolved to, keyed by "<collectionKey>:<migrationId>" for pass 2's relationship fields.
 async function seedItemsPass1(
   payload: Payload,
   collections: CollectionDef[],
@@ -279,8 +262,6 @@ async function seedGlobals(payload: Payload, globals: GlobalDef[], ctx: SeedCtx)
   return seeded;
 }
 
-// ---------- main ----------
-
 async function main(): Promise<void> {
   const payload = await getPayload({ config });
   const resolvedConfig = await config;
@@ -294,9 +275,6 @@ async function main(): Promise<void> {
 
   const urlToAssetId = new Map(assets.map((asset) => [asset.canonicalUrl, asset.assetId]));
   const resolveAssetId = (url: string): string | undefined => urlToAssetId.get(url);
-  // Neither media docs nor migrated items carry a custom id (see Media.ts.tpl and
-  // emitCmsCollectionFile) — Payload assigns both, so a reference is resolved through the maps
-  // seedMedia/seedItemsPass1 populate as they go, keyed by the migration's own stable ids.
   const mediaIds = new Map<string, string | number>();
   const docIds = new Map<string, string | number>();
   const ctx: SeedCtx = {

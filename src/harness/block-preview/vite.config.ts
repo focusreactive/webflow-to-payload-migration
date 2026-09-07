@@ -26,7 +26,6 @@ function runtimeAliases(): Record<string, string> {
     try {
       aliases[specifier] = require.resolve(specifier);
     } catch {
-      // not installed — leave it to the default resolver so the error is clear
     }
   }
   return aliases;

@@ -16,8 +16,6 @@ const config = [
   ...nextCoreWebVitals,
   ...nextTypescript,
   {
-    // AI-authored presentation components were visually verified as-is (M5/M7);
-    // keep opinionated rules from blocking the lint gate on them.
     files: ["src/blocks/**/Component.tsx", "src/globals/**/Component.tsx"],
     rules: {
       "@next/next/no-img-element": "off",

@@ -71,8 +71,6 @@ export async function updateStep(projectPath: string, stepId: string, patch: Par
 
 function stepRecordWithPatch(existing: StepRecord, patch: Partial<StepRecord>): StepRecord {
   const merged = { ...existing, ...patch };
-  // JSON.stringify drops explicit undefined, but the strict schema must not
-  // see keys that a patch intentionally cleared.
   for (const key of Object.keys(merged) as (keyof StepRecord)[]) {
     if (merged[key] === undefined) delete merged[key];
   }

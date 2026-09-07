@@ -7,16 +7,16 @@ export const pageSourceSchema = z.enum(["sitemap", "crawl", "searchindex"]);
 export type PageSource = z.infer<typeof pageSourceSchema>;
 
 export const pageRecordSchema = z.strictObject({
-  route: z.string(), // нормализованный путь; '/' для главной
+  route: z.string(),
   kind: pageKindSchema,
-  collectionKey: z.string().optional(), // from data-wf-collection
+  collectionKey: z.string().optional(),
   slug: z.string().optional(),
   localeId: z.string().optional(),
   sources: z.array(pageSourceSchema).min(1),
 });
 export const collectionRecordSchema = z.strictObject({
   key: z.string(),
-  routePattern: z.string(), // '/works/:slug'
+  routePattern: z.string(),
   itemCount: z.number().int().nonnegative(),
 });
 export const pagesDataSchema = z.strictObject({

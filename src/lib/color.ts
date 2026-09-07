@@ -154,7 +154,6 @@ export function parseColor(value: string): Rgba | null {
 
 export function colorsClose(a: Rgba, b: Rgba): boolean {
   if (Math.abs(a.a - b.a) > COLOR_ALPHA_TOLERANCE) return false;
-  // Fully transparent on both sides — the rgb channels never render.
   if (a.a === 0 && b.a === 0) return true;
   return (
     Math.abs(a.r - b.r) <= COLOR_CHANNEL_TOLERANCE
@@ -163,9 +162,6 @@ export function colorsClose(a: Rgba, b: Rgba): boolean {
   );
 }
 
-// CSS color-mix() mixes premultiplied by alpha (CSS Color 5 §3.4), which is what
-// makes `color-mix(in oklab, X 70%, transparent)` a 70%-alpha X rather than a
-// colour dragged towards black.
 export function mixOklab(from: Rgba, to: Rgba, weightFrom: number): Rgba {
   const weightTo = 1 - weightFrom;
   const left = toOklab(from);

@@ -3,8 +3,6 @@ import { getPayload } from "payload";
 
 import type { MediaProp } from "./normalize-values";
 
-// Resolves a literal MediaRef (media custom id = migration asset id) emitted
-// into a generated detail route.
 export async function mediaProp(assetId: string): Promise<MediaProp | undefined> {
   const payload = await getPayload({ config });
   try {

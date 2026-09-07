@@ -94,8 +94,6 @@ function splitTopLevel(value: string, delimiter: string): string[] {
   return parts.map((part) => part.trim()).filter((part) => part !== "");
 }
 
-// The same family often appears both quoted and bare in one declaration; without
-// the dedupe that duplicate rides straight into the --font-* value.
 function splitFontStack(raw: string): string[] {
   const families = raw
     .split(",")

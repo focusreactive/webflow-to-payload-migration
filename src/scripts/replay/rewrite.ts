@@ -9,8 +9,6 @@ const CSS_URL_PATTERN = /url\(\s*(['"]?)([^'")]+)\1\s*\)/g;
 
 const INTEGRITY_ATTRIBUTES = ["integrity", "crossorigin"] as const;
 
-// The map is built from index.rendered.html — the post-hydration DOM — so stamping runs on
-// `load`, after the page's own scripts have finished building the tree the map describes.
 const ANCHOR_STAMPER = `
 window.addEventListener("load", function () {
   setTimeout(function () {
@@ -36,11 +34,6 @@ function assetPath(id: string): string {
   return `${ASSET_ROUTE_PREFIX}${id}`;
 }
 
-// `href` also appears on <a>, <area> and <base>, whose targets are navigation,
-// not asset fetches — rewriting those would send the reference page to the
-// asset route instead of the page it links to. Scope href to <link> (icons,
-// stylesheets, preloads), where the browser itself fetches the target as a
-// resource.
 function attributeSelector(attribute: string): string {
   return attribute === "href" ? "link[href]" : `[${attribute}]`;
 }

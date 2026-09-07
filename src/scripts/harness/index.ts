@@ -17,11 +17,6 @@ const CONFIG = resolve(here, "../../harness/block-preview/vite.config.ts");
 const HEALTH_ROUTE = "/_health";
 const HTTP_OK = 200;
 
-// Registered from configureServer without returning a function, so Vite installs it
-// as a "pre" middleware — ahead of its own internal ones, in particular the
-// index.html fallback. Without that ordering the fallback would answer /_health
-// with 200 for any listening-but-broken harness, and the preflight check that
-// relies on this route would never be able to fail.
 function healthCheckPlugin(): Plugin {
   return {
     name: "harness:health",
@@ -50,9 +45,6 @@ export async function startHarness(projectDir: string): Promise<HarnessServer> {
 
   return {
     origin,
-    // The props are fetched from disk rather than carried in the query string:
-    // a global with a full navigation tree is tens of kilobytes, and an url
-    // that long is rejected by the http parser before the page ever renders.
     renderUrl: ({ kind, entry, inputPath }) =>
       `${origin}/?kind=${kind}&entry=${encodeURIComponent(entry)}&input=${encodeURIComponent(`/@fs${inputPath}`)}`,
     close: () => server.close(),

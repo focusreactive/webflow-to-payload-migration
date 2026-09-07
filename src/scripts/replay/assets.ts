@@ -31,10 +31,6 @@ function idOf(url: string): string {
   return createHash("sha1").update(url).digest("hex").slice(0, ID_LENGTH);
 }
 
-// The snapshot store keys its entries by `normalizeUrl` (fragment stripped, no
-// trailing slash beyond root). Reusing that same function here — rather than
-// re-deriving the rule — means a request URL differing only in fragment or
-// trailing slash still hits the entry the store filed it under.
 function tryNormalize(url: string): string | undefined {
   try {
     return normalizeUrl(url);

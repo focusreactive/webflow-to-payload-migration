@@ -90,8 +90,6 @@ function sortRecord<T>(record: Record<string, T>): Record<string, T> {
   return sorted;
 }
 
-// The sidecar carries the curated props only; the measured rects reach disk
-// through the stitch index, which is written from the same in-memory render.
 export function serializeStyles(styles: Record<string, StyleEntry>): string {
   const sortedStyles: Record<string, Record<string, string>> = {};
   for (const migId of Object.keys(styles).sort()) {
