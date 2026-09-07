@@ -86,6 +86,14 @@ field names (`DUPLICATE_FIELD`), a `pageBinding` that names a field the response
 (`PAGE_BINDING`), and a section listing an `itemFields` name the collection has no field for
 (`UNKNOWN_ITEM_FIELD`). Repeating it overwrites the shard from the current response.
 
+**Slug rule (collection-level `--fields-schema` only):** always declare a dedicated `slug` text
+field and set `pageBinding.slugField` to it — never bind the page to `title`, `name`, or any other
+display field, even when that field happens to be unique enough to route on. The item's route key
+and its display label are different concerns; collapsing them means renaming the title later
+silently breaks every link into that collection. If the reference gives no independent slug value
+for an item, derive one from the title yourself (kebab-case, ascii) rather than reusing the title
+field verbatim.
+
 ## Content (AI, collection-level)
 
 ```
