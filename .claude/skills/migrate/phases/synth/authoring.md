@@ -77,6 +77,9 @@ exception to "no hardcoded content"). `--section` is what switches it.
 `--fields-subject` prints the entity's grounding — its name/role, the exemplar `{route, nodeIds}`
 to read on the reference, the collection keys available to bind to, and `responsePath`.
 
+A `reference` / `multiReference` field's `collectionKey` may name the collection's own key — a
+section can point at other items of the collection it belongs to, not only at another collection.
+
 `--fields-accept` writes `schema.json` into the surface's own directory and, for a block, also
 emits `config.ts` and `props.ts` next to it. It re-checks what the schema alone cannot: duplicate
 field names (`DUPLICATE_FIELD`), a `pageBinding` that names a field the response never declared
@@ -110,9 +113,14 @@ pnpm tsx src/scripts/synth/index.ts --project <projectPath> --input-build --<ent
 
 No response: it reads `schema.json` + `content.json` and writes `input.json` — media fields resolved
 from `assetId` to a ready `{src, alt?}`, richText fields converted from their raw literal into
-Lexical `SerializedEditorState` JSON. Prints `{ step, entity, input }`. This is the file the
-harness's `?input=` points at, and the one `--richtext-subject` reads next. Safe to repeat: it
-recomputes the file from the shards every time.
+Lexical `SerializedEditorState` JSON, and `reference` / `multiReference` fields resolved from their
+stored id(s) into the real referenced document(s). Prints `{ step, entity, input }`. This is the
+file the harness's `?input=` points at, and the one `--richtext-subject` reads next. Safe to repeat:
+it recomputes the file from the shards every time.
+
+A reference is resolved out of the target collection's own `content.json`, so that collection's
+`--content-accept` has to have run first: pointing at a collection with no `content.json` yet, or at
+an id that collection does not carry, exits with an error naming which.
 
 ## Draft (AI)
 
@@ -122,8 +130,13 @@ pnpm tsx src/scripts/synth/index.ts --project <projectPath> --draft-subject --<e
 
 Prints everything the author needs to write the first `Component.tsx`, inline: the surface key, the
 exemplar `{route, nodeIds}`, the accepted fields, the paths of `schema.json` / `content.json` /
-`input.json`, the `componentPath` to write, and the theme token vocabulary (every token name, by
-group and tier). Read-only and safe to repeat.
+`input.json`, the `componentPath` to write, the theme token vocabulary (every token name, by group
+and tier), and `componentWarnings`. Read-only and safe to repeat.
+
+`componentWarnings` is empty until a `Component.tsx` exists; re-run the step after you have drafted
+one and it reports the two defects the accept checks cannot see — a declared field the component
+never renders from props, and a hardcoded dev-only asset path. It never blocks anything, but treat a
+non-empty list as something to fix before you call the surface finished.
 
 Read the exemplar's nodes on the reference, cross-reference them against the content shard by
 matching text (reliable — the string is in both places), look at the reference screenshot, decide
@@ -144,6 +157,28 @@ the DOM structure yourself, and measure whatever the styles artifact did not alr
 - richText fields are rendered by their generated wrapper (the richtext step), never hand-written.
 - Item-/instance-varying content comes from props; invariant content is hardcoded only where the
   schema says so (or, for a collection section, everything outside `itemFields`).
+- A field whose value points at another document — in this collection or another — is
+  `reference` / `multiReference` in the schema (`collectionKey` = the target collection's key), with
+  the real target id(s) as its `content.json` value, taken from that collection's own
+  already-written `content.json`. Never hardcode the referenced document's rendered fields (title,
+  excerpt, image, …): `input.json` hands you the resolved document, and `props.ts` types it as
+  `{ id: string } & Record<string, unknown>`.
+- **Date rule:** a date the reference shows is a `date` field, never `text`. Its `content.json`
+  value is full ISO-8601 (`"2025-08-12T00:00:00.000Z"` — `--content-accept` rejects anything else,
+  a bare `"2025-08-12"` included); the string as the reference draws it ("August 12, 2025",
+  "12.08.2025") never reaches the data. The prop the component receives is that ISO string, and the
+  component formats it back into the reference's exact display form — part order, month spelling,
+  separators, any surrounding literal like "Updated" — read off the reference, not invented. Format
+  with `timeZone: "UTC"` (e.g.
+  `new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" })`):
+  a date-only value stored at midnight UTC renders a day early in any negative offset otherwise.
+- Every text and media value the surface actually carries — its own fields, and any document it
+  references — belongs in `schema.json` and flows through `content.json` and `input.json` from
+  there. A hardcoded lookalike (fabricated card text, a literal image path) in place of a real field
+  is a defect even when it looks identical to the reference, because it ships wrong or stale content
+  the moment the real document changes. **Never** hardcode a `/@fs…` or `/a/<id>` path either: the
+  first is the harness's own dev-time filesystem route and the second belongs to the replay server,
+  and neither exists in the deployed app. `--draft-subject`'s `componentWarnings` flags both.
 - **Video rule:** if the reference has a background/looping `<video>`, render a real `<video>` with
   the same (rewritten) source — mirrored, not a `poster` still.
 

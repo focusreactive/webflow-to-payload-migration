@@ -59,12 +59,18 @@ function groupValueSchema(
   return absence === "optional" ? z.strictObject(shape) : z.object(shape);
 }
 
+const ISO_DATE_MESSAGE =
+  'date field value must be ISO-8601 (e.g. "2025-08-12T00:00:00.000Z") — display formatting belongs '
+  + "in Component.tsx, not in the stored value";
+
 function scalarValueSchema(scalar: ScalarType): z.ZodType {
   switch (scalar) {
     case "number":
       return z.number();
     case "boolean":
       return z.boolean();
+    case "date":
+      return z.iso.datetime({ offset: true, error: ISO_DATE_MESSAGE });
     case "image":
     case "file":
     case "video":

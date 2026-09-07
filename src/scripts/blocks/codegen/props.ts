@@ -2,6 +2,8 @@ import { blockPropsInterfaceName } from "#blocks/codegen/names.ts";
 import { type BlockType } from "#ir/blocks.ts";
 import { type FieldType } from "#ir/field-type.ts";
 
+const RESOLVED_DOC_TYPE = "{ id: string } & Record<string, unknown>";
+
 export function propKey(name: string): string {
   return /^[A-Za-z_$][A-Za-z0-9_$]*$/.test(name) ? name : JSON.stringify(name);
 }
@@ -10,7 +12,7 @@ export function emitBlockProps(block: BlockType): string {
   const iface = blockPropsInterfaceName(block.id);
   const lines = block.fields.map((f) => `  ${propKey(f.name)}${f.required ? "" : "?"}: ${tsType(f.type)};`);
   if (block.collectionKey !== undefined) {
-    lines.push(`  docs?: ({ id: string } & Record<string, unknown>)[];`);
+    lines.push(`  docs?: (${RESOLVED_DOC_TYPE})[];`);
   }
   const media = usesMediaProp(block) ? "export interface MediaProp {\n  src: string;\n  alt?: string;\n}\n\n" : "";
   const richText =
@@ -78,9 +80,9 @@ function tsType(type: FieldType): string {
     case "option":
       return type.values.map((v) => JSON.stringify(v)).join(" | ");
     case "reference":
-      return "string";
+      return RESOLVED_DOC_TYPE;
     case "multiReference":
-      return "string[]";
+      return `(${RESOLVED_DOC_TYPE})[]`;
     case "array":
       return `${tsType(type.element)}[]`;
     case "group":

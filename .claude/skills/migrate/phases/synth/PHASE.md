@@ -83,6 +83,9 @@ read-only and deterministic flags (`--state`, `--accept`) and delegate the rest.
 advance, wake that same subagent with `SendMessage` and have it finish — never do its work
 yourself, and never run an acceptance step on its behalf.
 
+**Every subagent in this phase runs on Sonnet.** Dispatch authors with `model: "sonnet"`, and keep
+that model when you wake one with `SendMessage`.
+
 Up to five surfaces are in flight at once across the vertical's entities, one per MCP lane declared
 in `.mcp.json` (`pw-1` … `pw-5`, tool prefix `mcp__pw-N__browser_*`). **A lane belongs to the
 surface, not to the subagent:** every subagent you dispatch for that surface is told the same lane,
@@ -120,6 +123,7 @@ surfaces will use, and the sections fan out only once `--state` shows `fields: t
 ```
 Agent(
   subagent_type: "general-purpose",
+  model:         "sonnet",
   description:   "synth collection shards for <key>",
   prompt: "You author the collection-level field schema and content of one collection.
 
@@ -165,6 +169,7 @@ does the fields and content pair step 2.2.1 covers, without `--section`.
 ```
 Agent(
   subagent_type: "general-purpose",
+  model:         "sonnet",
   description:   "synth <vertical>/<surface>",
   prompt: "You author one surface of the synth phase end-to-end and accept it.
 

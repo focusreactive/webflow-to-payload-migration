@@ -30,7 +30,7 @@ describe("emitBlockProps", () => {
     expect(out).toContain("cover?: MediaProp;");
     expect(out).toContain("clip?: MediaProp;");
     expect(out).toContain('align: "left" | "center";');
-    expect(out).toContain("related?: string[];");
+    expect(out).toContain("related?: ({ id: string } & Record<string, unknown>)[];");
     expect(out).toContain("items: { label: string }[];");
     expect(out).toContain("export interface MediaProp");
     expect(out).toMatchInlineSnapshot(`
@@ -44,7 +44,7 @@ describe("emitBlockProps", () => {
         cover?: MediaProp;
         clip?: MediaProp;
         align: "left" | "center";
-        related?: string[];
+        related?: ({ id: string } & Record<string, unknown>)[];
         items: { label: string }[];
       }
       "
@@ -70,6 +70,16 @@ describe("emitBlockProps", () => {
     it("omits the type when no field uses richText", () => {
       expect(emitBlockProps(block)).not.toContain("RichTextData");
     });
+  });
+
+  it("types a reference field as the resolved document, not a bare id string", () => {
+    const refBlock = blockTypeSchema.parse({
+      id: "profile-card",
+      name: "Profile Card",
+      content: {},
+      fields: [{ name: "author", type: { type: "reference", collectionKey: "people" }, required: true }],
+    });
+    expect(emitBlockProps(refBlock)).toContain("author: { id: string } & Record<string, unknown>;");
   });
 
   it("adds the docs prop only for collection-list blocks", () => {

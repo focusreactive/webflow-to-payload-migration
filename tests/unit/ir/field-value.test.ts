@@ -28,6 +28,17 @@ describe("valueSchemaForFieldType (IR pass)", () => {
     expect(valueSchemaForFieldType({ type: "text" }).safeParse("hi").success).toBe(true);
   });
 
+  it("accepts only ISO-8601 date-times for a date field", () => {
+    const schema = valueSchemaForFieldType({ type: "date" });
+    expect(schema.safeParse("2025-08-12T00:00:00.000Z").success).toBe(true);
+    expect(schema.safeParse("2025-08-12T09:30:00+02:00").success).toBe(true);
+    expect(schema.safeParse("2025-08-12").success).toBe(false);
+    const parsed = schema.safeParse("August 12, 2025");
+    expect(parsed.success).toBe(false);
+    expect(z.prettifyError(parsed.error!)).toMatch(/ISO-8601/);
+    expect(z.prettifyError(parsed.error!)).toMatch(/Component\.tsx/);
+  });
+
   it("validates MediaRef for image/file/video", () => {
     expect(valueSchemaForFieldType({ type: "image" }).safeParse({ assetId: "a1", alt: "x" }).success).toBe(true);
     expect(valueSchemaForFieldType({ type: "image" }).safeParse("https://cdn/img.png").success).toBe(false);
