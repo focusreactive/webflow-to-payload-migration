@@ -28,13 +28,16 @@ describe("normalizeValue", () => {
     expect(normalizeValue({ type: "richText" }, null, ctx)).toBeUndefined();
   });
 
-  it("maps relationships to slugs whether populated or not", () => {
-    expect(normalizeValue({ type: "reference", collectionKey: "works" }, { id: 7, slug: "alpha" }, ctx)).toBe("alpha");
-    expect(normalizeValue({ type: "reference", collectionKey: "works" }, "alpha", ctx)).toBe("alpha");
-    expect(normalizeValue({ type: "reference", collectionKey: "works" }, { id: 7 }, ctx)).toBe("7");
+  it("keeps the resolved document for relationships, whether populated or not", () => {
+    expect(normalizeValue({ type: "reference", collectionKey: "works" }, { id: 7, slug: "alpha" }, ctx)).toEqual({
+      id: "7",
+      slug: "alpha",
+    });
+    expect(normalizeValue({ type: "reference", collectionKey: "works" }, "alpha", ctx)).toEqual({ id: "alpha" });
+    expect(normalizeValue({ type: "reference", collectionKey: "works" }, { id: 7 }, ctx)).toEqual({ id: "7" });
     expect(
       normalizeValue({ type: "multiReference", collectionKey: "works" }, [{ id: 1, slug: "a" }, "b"], ctx),
-    ).toEqual(["a", "b"]);
+    ).toEqual([{ id: "1", slug: "a" }, { id: "b" }]);
   });
 
   it("unwraps array rows ({item}) and recurses groups", () => {

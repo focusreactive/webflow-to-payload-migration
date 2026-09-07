@@ -31,12 +31,13 @@ function mediaPropFrom(value: unknown): MediaProp | undefined {
   return { src: value["url"], ...(typeof alt === "string" && alt !== "" ? { alt } : {}) };
 }
 
-function slugFrom(value: unknown): string | undefined {
-  if (typeof value === "string") return value;
+function resolvedDocFrom(value: unknown): NormalizedDoc | undefined {
   if (isRecord(value)) {
-    if (typeof value["slug"] === "string" && value["slug"] !== "") return value["slug"];
-    if (typeof value["id"] === "string" || typeof value["id"] === "number") return String(value["id"]);
+    const id = value["id"];
+    if (typeof id === "string" || typeof id === "number") return { ...value, id: String(id) };
+    return undefined;
   }
+  if (typeof value === "string") return { id: value };
   return undefined;
 }
 
@@ -50,9 +51,9 @@ export function normalizeValue(node: FieldTypeNode, value: unknown, ctx: Normali
     case "richText":
       return value;
     case "reference":
-      return slugFrom(value);
+      return resolvedDocFrom(value);
     case "multiReference":
-      return Array.isArray(value) ? value.map(slugFrom).filter((v) => v !== undefined) : undefined;
+      return Array.isArray(value) ? value.map(resolvedDocFrom).filter((v) => v !== undefined) : undefined;
     case "array": {
       if (!Array.isArray(value) || node.element === undefined) return undefined;
       const element = node.element;
