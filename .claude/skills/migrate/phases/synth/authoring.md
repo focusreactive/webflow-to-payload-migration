@@ -54,6 +54,11 @@ snapshot phase also wrote a per-route `index.styles.json` (curated computed prop
 `data-mig-id`) and `subtree.html` next to the mirror — the same numbers, already captured, when you
 would rather read than probe.
 
+Every reading is taken at your lane's window, and the lane opens at 1440×900 — the width
+`src/lib/capture/defaults.ts` captured, and the only width `index.styles.json` describes. If you
+resize to probe another width, resize back before you finish: the lane outlives your surface, and
+the next author inherits whatever window you left.
+
 ## Fields (AI)
 
 ```
@@ -130,6 +135,8 @@ the DOM structure yourself, and measure whatever the styles artifact did not alr
   screenshot.
 - Tokens-first: a theme utility when the measured value matches a token, an arbitrary value with
   the exact measured pixels otherwise. No raw `<style>` blocks.
+- Base classes carry the 1440 reading; a narrower width carries only its delta (see "Widths"). Never
+  a bare `sm:` / `md:` / `lg:` — those are Tailwind's defaults, not this site's breakpoints.
 - Write idiomatic, semantic React — headings, buttons, `<a>`, real form controls. No `data-mig-id`,
   ever, on the candidate.
 - Media props arrive as ready-to-render `{src, alt?}` from `input.json` — render exactly what the
@@ -180,17 +187,75 @@ the component. Two habits keep the reading honest:
 - After a probe that does not undo itself (a lightbox that leaves nodes behind when closed),
   navigate again rather than assuming a second click restored the page.
 
-| what the reference shows                                        | what to write                                          |
-| --------------------------------------------------------------- | ------------------------------------------------------ |
-| a property changes only under a forced pseudo-class             | a CSS variant: `hover:` / `focus-visible:` / `active:` |
-| a property changes under a real event, not the pseudo-class     | React state plus an event handler                      |
-| the node has a `transition`                                     | the handler flips a class; the easing stays in CSS     |
-| the node is absent after the stimulus                           | conditional rendering                                  |
-| the node stays, a class or property changed                     | the same node, class toggled                           |
-| something new appeared inside the entity's own subtree          | conditional rendering inside that node                 |
-| something new appeared outside the entity                       | a portal into `body`                                   |
-| something changed outside the entity without a new node         | a side effect of the handler                           |
-| `src` or text changed                                           | nothing — that is content, not behaviour               |
+| what the reference shows                                    | what to write                                          |
+| ----------------------------------------------------------- | ------------------------------------------------------ |
+| a property changes only under a forced pseudo-class         | a CSS variant: `hover:` / `focus-visible:` / `active:` |
+| a property changes under a real event, not the pseudo-class | React state plus an event handler                      |
+| the node has a `transition`                                 | the handler flips a class; the easing stays in CSS     |
+| the node is absent after the stimulus                       | conditional rendering                                  |
+| the node stays, a class or property changed                 | the same node, class toggled                           |
+| something new appeared inside the entity's own subtree      | conditional rendering inside that node                 |
+| something new appeared outside the entity                   | a portal into `body`                                   |
+| something changed outside the entity without a new node     | a side effect of the handler                           |
+| `src` or text changed                                       | nothing — that is content, not behaviour               |
+
+## Widths
+
+The source is desktop-first: its base rules apply at every width and `max-width` queries override
+downward. Transcribe that cascade rather than inverting it — base classes hold the 1440 reading,
+narrower widths hold only their deltas — and the frame you already matched cannot regress.
+
+- The theme's `--breakpoint-*` tokens, printed in the draft vocabulary, are collected from
+  `min-width` queries only, so they name the tiers **above** desktop. Use them as ordinary variants:
+  `<token-name>:`.
+- Tailwind's own `sm:` … `2xl:` survive in the deliverable and are **not** this site's breakpoints.
+  Reaching for one invents a layout change at a width the source has none. Only token names and
+  literal `max-[<px>]:` — literal is load-bearing, because the harness's Tailwind scans your file's
+  text and never generates a variant assembled from a template string.
+
+The tiers that carry the narrow layout are `max-width` queries, so they are not tokens. Read the
+site's own off the reference:
+
+```
+browser_evaluate(`() => {
+  const found = new Set();
+  for (const sheet of document.styleSheets) {
+    let rules; try { rules = sheet.cssRules } catch { continue }
+    for (const rule of rules) {
+      for (const match of (rule.media?.mediaText ?? "").matchAll(/max-width:\s*(\d+)px/g)) {
+        found.add(Number(match[1]));
+      }
+    }
+  }
+  return [...found].sort((a, b) => b - a);
+}`)
+```
+
+A Webflow site normally answers `[991, 767, 479]`. Probe each tier it declared, then put the lane
+back:
+
+```
+browser_resize(991, 900) → re-read the exemplar's nodes → 767 → 479 → browser_resize(1440, 900)
+```
+
+Write a class only where a reading differs from the tier above it. A tier that reads the same gets
+nothing — that is the whole test for whether this site changes there.
+
+| what changes as the window narrows                    | what to write                                |
+| ----------------------------------------------------- | -------------------------------------------- |
+| a visible node becomes `display: none`                | `max-[<px>]:hidden`                          |
+| a node hidden at 1440 becomes visible                 | render it, `hidden max-[<px>]:block`         |
+| `flex-direction` turns column, or a grid loses tracks | that delta on the same node                  |
+| font-size, padding or gap changes                     | the value measured at that width             |
+| boxes only reflow, no property changed                | nothing — the fluid layout already does it   |
+| a menu that opens on tap                              | behaviour, not width — see the section above |
+
+A node hidden at 1440 is in neither the exemplar's `nodeIds` nor `index.styles.json`: zero-area
+elements never reach the artifacts. Burger buttons and mobile menus live there, and the live page at
+that width is the only place you will find them.
+
+Check your own work the same way. The harness renders at the full document width with the site theme
+loaded, so resize it to each tier and compare against the reference at that tier.
 
 ## accept (deterministic)
 
