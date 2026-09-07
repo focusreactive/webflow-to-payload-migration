@@ -88,6 +88,29 @@ describe("emitCmsCollectionFile", () => {
     expect(source).toContain('"useAsTitle": "title"');
   });
 
+  it("emits the slug field as unique, indexed and never localized, regardless of what synth declared", () => {
+    const source = emitCmsCollectionFile(
+      {
+        key: collectionIdSchema.parse("works"),
+        label: "Works",
+        fields: [
+          { name: "title", type: { type: "text" }, required: true },
+          // synth's response schema doesn't carry unique/index/localized at all — only name/type/required
+          // reach the generator, so this fixture mirrors exactly what a real schema.json shard looks like.
+          { name: "slug", type: { type: "text" }, required: true },
+        ],
+      },
+      "works",
+    );
+
+    const match = source.match(/\.\.\.\((\{[\s\S]*\})\s*as Omit</);
+    const body = JSON.parse(match![1] ?? "") as {
+      fields: { name: string; localized?: boolean; unique?: boolean; index?: boolean }[];
+    };
+    const slug = body.fields.find((f) => f.name === "slug");
+    expect(slug).toEqual({ name: "slug", type: "text", required: true, unique: true, index: true });
+  });
+
   it("localizes content-bearing fields and leaves uploads and references alone", () => {
     const source = emitCmsCollectionFile(
       {

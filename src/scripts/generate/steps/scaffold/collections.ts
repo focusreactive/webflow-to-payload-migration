@@ -35,6 +35,8 @@ export function emitCmsCollectionFile(
   const firstText = collectionTitleField(collection);
 
   const fields = collection.fields.map((field) => {
+    if (field.name === "slug") return { name: "slug", type: "text", required: true, unique: true, index: true };
+
     const emitted = withLocalization(payloadField(field, slugFor), field.type.type);
 
     const isRelationship = field.type.type === "reference" || field.type.type === "multiReference";
