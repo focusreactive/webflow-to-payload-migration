@@ -169,6 +169,7 @@ export async function emitDeliverable(args: { projectPath: string }): Promise<{ 
   draft.emit("src/lib/collection-field-types.ts", emitCollectionFieldTypesFile(collectionEntries, slugFor));
   draft.emit("src/lib/collection-slugs.ts", emitCollectionSlugsFile(collectionSlugMap));
   draft.emit("src/lib/global-field-types.ts", emitGlobalFieldTypesFile(globals));
+  draft.emit("src/lib/normalize-ctx.ts", await readTemplate("lib/normalize-ctx.ts.tpl"));
 
   draft.template(
     "src/app/(frontend)/layout.tsx",

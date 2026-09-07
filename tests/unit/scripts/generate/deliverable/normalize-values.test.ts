@@ -40,6 +40,25 @@ describe("normalizeValue", () => {
     ).toEqual([{ id: "1", slug: "a" }, { id: "b" }]);
   });
 
+  it("re-normalizes a resolved reference through its own collection's fields (nested media -> {src, alt})", () => {
+    const worksFields: FieldDef[] = [
+      { name: "title", type: { type: "text" }, required: true },
+      { name: "heroImage", type: { type: "image" }, required: false },
+    ];
+    const withResolver: NormalizeCtx = {
+      resolveCollectionFields: (collectionKey) => (collectionKey === "works" ? worksFields : undefined),
+    };
+    const doc = { id: 7, title: "Alpha", heroImage: { id: "m1", url: "/hero.png" } };
+    expect(normalizeValue({ type: "reference", collectionKey: "works" }, doc, withResolver)).toEqual({
+      id: "7",
+      title: "Alpha",
+      heroImage: { src: "/hero.png" },
+    });
+    expect(
+      normalizeValue({ type: "multiReference", collectionKey: "works" }, [doc], withResolver),
+    ).toEqual([{ id: "7", title: "Alpha", heroImage: { src: "/hero.png" } }]);
+  });
+
   it("unwraps array rows ({item}) and recurses groups", () => {
     const faq = {
       type: "array",

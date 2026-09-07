@@ -3,8 +3,9 @@ import type { ContentRecord } from "#ir/content.ts";
 import type { FieldType } from "#ir/field-type.ts";
 import { readShardJson } from "#lib/synth-store/paths.ts";
 
-import { contentShardPath } from "../../../constants/paths.ts";
-import type { CollectionContentShard } from "../../../verticals/collections.ts";
+import { contentShardPath, schemaShardPath } from "../../../constants/paths.ts";
+import type { CollectionContentShard, CollectionSchemaShard } from "../../../verticals/collections.ts";
+import type { FieldsForCollection } from "./media-input.ts";
 
 export type ResolveDoc = (collectionKey: CollectionId, id: string) => ContentRecord;
 export type DocIndex = Map<CollectionId, Map<string, ContentRecord>>;
@@ -70,6 +71,26 @@ export function docResolver(index: DocIndex): ResolveDoc {
     }
     return doc;
   };
+}
+
+export async function buildFieldsIndex(
+  projectPath: string,
+  fields: { type: FieldType }[],
+): Promise<Map<CollectionId, CollectionSchemaShard["fields"]>> {
+  const index = new Map<CollectionId, CollectionSchemaShard["fields"]>();
+  for (const collectionKey of referencedCollectionKeys(fields)) {
+    const shard = await readShardJson<CollectionSchemaShard>(
+      schemaShardPath(projectPath, "collections", collectionKey),
+    );
+    index.set(collectionKey, shard.fields);
+  }
+  return index;
+}
+
+export function fieldsForCollectionResolver(
+  index: Map<CollectionId, CollectionSchemaShard["fields"]>,
+): FieldsForCollection {
+  return (collectionKey) => index.get(collectionKey) ?? [];
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {

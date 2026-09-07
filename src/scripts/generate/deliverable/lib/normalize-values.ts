@@ -19,7 +19,9 @@ export interface MediaProp {
 
 export type NormalizedDoc = { id: string } & Record<string, unknown>;
 
-export type NormalizeCtx = Record<never, never>;
+export interface NormalizeCtx {
+  resolveCollectionFields?: (collectionKey: string) => FieldDef[] | undefined;
+}
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return value !== null && typeof value === "object" && !Array.isArray(value);
@@ -31,11 +33,17 @@ function mediaPropFrom(value: unknown): MediaProp | undefined {
   return { src: value["url"], ...(typeof alt === "string" && alt !== "" ? { alt } : {}) };
 }
 
-function resolvedDocFrom(value: unknown): NormalizedDoc | undefined {
+function resolvedDocFrom(
+  collectionKey: string | undefined,
+  value: unknown,
+  ctx: NormalizeCtx,
+): NormalizedDoc | undefined {
   if (isRecord(value)) {
     const id = value["id"];
-    if (typeof id === "string" || typeof id === "number") return { ...value, id: String(id) };
-    return undefined;
+    if (typeof id !== "string" && typeof id !== "number") return undefined;
+    const fields = collectionKey !== undefined ? ctx.resolveCollectionFields?.(collectionKey) : undefined;
+    const normalized = fields !== undefined ? normalizeRecord(fields, value, ctx) : value;
+    return { ...normalized, id: String(id) };
   }
   if (typeof value === "string") return { id: value };
   return undefined;
@@ -51,9 +59,11 @@ export function normalizeValue(node: FieldTypeNode, value: unknown, ctx: Normali
     case "richText":
       return value;
     case "reference":
-      return resolvedDocFrom(value);
+      return resolvedDocFrom(node.collectionKey, value, ctx);
     case "multiReference":
-      return Array.isArray(value) ? value.map(resolvedDocFrom).filter((v) => v !== undefined) : undefined;
+      return Array.isArray(value) ?
+          value.map((entry) => resolvedDocFrom(node.collectionKey, entry, ctx)).filter((v) => v !== undefined)
+        : undefined;
     case "array": {
       if (!Array.isArray(value) || node.element === undefined) return undefined;
       const element = node.element;

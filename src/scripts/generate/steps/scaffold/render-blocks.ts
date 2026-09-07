@@ -16,6 +16,7 @@ import React from "react";
 import { blockFieldTypes, collectionListBlocks } from "@/lib/block-field-types";
 import { collectionFieldTypes } from "@/lib/collection-field-types";
 import { normalizeDoc, normalizeRecord, type NormalizedDoc } from "@/lib/normalize-values";
+import { normalizeCtx as ctx } from "@/lib/normalize-ctx";
 
 ${imports}
 
@@ -23,7 +24,6 @@ const blockComponents = {
 ${mapEntries}
 } as unknown as Record<string, React.ComponentType<Record<string, unknown>>>;
 
-const ctx = {};
 const DEFAULT_LIST_LIMIT = 12;
 
 type BlockData = { blockType?: unknown } & Record<string, unknown>;

@@ -149,15 +149,6 @@ export function partitionFields(fields: FieldDef[]): { plain: FieldDef[]; refs: 
   return { plain: fields.filter((field) => !isRef(field)), refs: fields.filter(isRef) };
 }
 
-export function refFieldNames(fields: FieldDef[]): string[] {
-  return partitionFields(fields).refs.map((field) => field.name);
-}
-
-export function omitFields(data: Record<string, unknown>, names: string[]): Record<string, unknown> {
-  const omit = new Set(names);
-  return Object.fromEntries(Object.entries(data).filter(([key]) => !omit.has(key)));
-}
-
 export function pageSlugForRoute(route: string): string {
   const trimmed = route.replace(/^\/+/, "").replace(/\/+$/, "");
   return trimmed === "" ? "home" : trimmed;
@@ -169,10 +160,4 @@ export function pageTitleForRoute(route: string): string {
   const last = slug.split("/").at(-1) ?? slug;
   const words = last.replace(/[-_]+/g, " ").trim();
   return words.charAt(0).toUpperCase() + words.slice(1);
-}
-
-export function assertValidCustomId(id: string, label: string): void {
-  if (id === "" || /[/.]/.test(id)) {
-    throw new Error(`${label}: "${id}" cannot be a Payload custom text id (must be non-empty, no "/" or ".")`);
-  }
 }

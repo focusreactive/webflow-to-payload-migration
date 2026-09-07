@@ -15,15 +15,13 @@ import { getPayload, type Payload } from "payload";
 import { collectionSlugs } from "../lib/collection-slugs";
 import type { FieldDef } from "../lib/normalize-values";
 import {
-  assertValidCustomId,
   collectAssetIdsFromValue,
   collectImgUrls,
-  omitFields,
   pageSlugForRoute,
   pageTitleForRoute,
   parseNdjson,
+  partitionFields,
   payloadDataForFields,
-  refFieldNames,
   type SeedCtx,
 } from "./transform";
 
@@ -58,6 +56,7 @@ interface AssetRecord {
 interface CollectionDef {
   key: string;
   fields: FieldDef[];
+  pageBinding: { slugField: string };
   items: Record<string, unknown>[];
 }
 
@@ -142,7 +141,15 @@ async function seedAdmin(payload: Payload): Promise<void> {
   }
 }
 
-async function seedMedia(payload: Payload, assets: AssetRecord[], referenced: Set<string>): Promise<number> {
+// Media docs carry no custom id — Payload owns it — so a re-run recognises an already-seeded
+// asset by the uploaded file's own name, and returns the migration assetId -> doc id map every
+// later pass (richText <img> rewriting, upload fields) resolves through.
+async function seedMedia(
+  payload: Payload,
+  assets: AssetRecord[],
+  referenced: Set<string>,
+  ids: Map<string, string | number>,
+): Promise<number> {
   let count = 0;
   const byId = new Map(assets.map((asset) => [asset.assetId, asset]));
   for (const assetId of [...referenced].sort()) {
@@ -155,56 +162,79 @@ async function seedMedia(payload: Payload, assets: AssetRecord[], referenced: Se
       warn(`asset ${assetId} (${asset.canonicalUrl}) was not downloaded — media doc skipped`);
       continue;
     }
-    assertValidCustomId(assetId, "media asset");
-    const exists = await payload.findByID({ collection: "media", id: assetId }).catch(() => null);
-    if (exists !== null) continue;
-    await payload.create({
+    const filename = path.basename(asset.storePath);
+    const existing = await payload.find({ collection: "media", where: { filename: { equals: filename } }, limit: 1 });
+    const found = existing.docs[0];
+    if (found !== undefined) {
+      ids.set(assetId, found.id);
+      continue;
+    }
+    const created = await payload.create({
       collection: "media",
-      data: { id: assetId, alt: asset.alt ?? "" },
+      data: { alt: asset.alt ?? "" },
       filePath: path.resolve(SNAPSHOT_DIR, asset.storePath),
     });
+    ids.set(assetId, created.id);
     count += 1;
   }
   return count;
 }
 
+// A relationship write deferred until every item across every collection has a doc id.
+interface PendingRefs {
+  collection: string;
+  docId: string | number;
+  fields: FieldDef[];
+  record: Record<string, unknown>;
+}
+
+// Items carry no custom id either — Payload owns the doc id — so a re-run recognises an item by
+// the slug its detail route is built on, and pass 1 records the doc id each migration id
+// resolved to, keyed by "<collectionKey>:<migrationId>" for pass 2's relationship fields.
 async function seedItemsPass1(
   payload: Payload,
   collections: CollectionDef[],
   contentByCollection: Map<string, Record<string, unknown>[]>,
+  docIds: Map<string, string | number>,
   ctx: SeedCtx,
-): Promise<Map<string, { collection: string; id: string; refs: Record<string, unknown> }>> {
-  const pass2 = new Map<string, { collection: string; id: string; refs: Record<string, unknown> }>();
+): Promise<PendingRefs[]> {
+  const pending: PendingRefs[] = [];
   for (const collection of collections) {
     const records = contentByCollection.get(collection.key) ?? [];
-    const refNames = refFieldNames(collection.fields);
+    const { plain, refs } = partitionFields(collection.fields);
+    const slugField = collection.pageBinding.slugField;
+    const slug = slugOf(collection.key);
     for (const record of records) {
-      const id = String(record["id"]);
-      assertValidCustomId(id, `${collection.key} item`);
-      const data = payloadDataForFields(collection.fields, record, ctx);
-      const refs = Object.fromEntries(Object.entries(data).filter(([name]) => refNames.includes(name)));
-      const plain = { id, ...omitFields(data, refNames) };
-      const slug = slugOf(collection.key);
-      const exists = await payload.findByID({ collection: slug as never, id }).catch(() => null);
-      if (exists === null) {
-        await payload.create({ collection: slug as never, data: plain as never });
-      } else {
-        await payload.update({ collection: slug as never, id, data: omitFields(plain, ["id"]) as never });
+      const migrationId = String(record["id"]);
+      const slugValue = record[slugField];
+      if (typeof slugValue !== "string" || slugValue === "") {
+        warn(`${collection.key} item ${migrationId} has no "${slugField}" value — skipped`);
+        continue;
       }
-      if (Object.keys(refs).length > 0) {
-        pass2.set(`${collection.key}:${id}`, { collection: slug, id, refs });
-      }
+      const data = payloadDataForFields(plain, record, ctx);
+      const existing = await payload.find({
+        collection: slug as never,
+        where: { [slugField]: { equals: slugValue } },
+        limit: 1,
+      });
+      const found = existing.docs[0] as { id: string | number } | undefined;
+      const saved = (
+        found === undefined
+          ? await payload.create({ collection: slug as never, data: data as never })
+          : await payload.update({ collection: slug as never, id: found.id, data: data as never })
+      ) as { id: string | number };
+      docIds.set(`${collection.key}:${migrationId}`, saved.id);
+      if (refs.length > 0) pending.push({ collection: slug, docId: saved.id, fields: refs, record });
     }
   }
-  return pass2;
+  return pending;
 }
 
-async function seedItemRefsPass2(
-  payload: Payload,
-  pass2: Map<string, { collection: string; id: string; refs: Record<string, unknown> }>,
-): Promise<void> {
-  for (const entry of pass2.values()) {
-    await payload.update({ collection: entry.collection as never, id: entry.id, data: entry.refs as never });
+async function seedItemRefsPass2(payload: Payload, pending: PendingRefs[], ctx: SeedCtx): Promise<void> {
+  for (const entry of pending) {
+    const data = payloadDataForFields(entry.fields, entry.record, ctx);
+    if (Object.keys(data).length === 0) continue;
+    await payload.update({ collection: entry.collection as never, id: entry.docId, data: data as never });
   }
 }
 
@@ -264,14 +294,16 @@ async function main(): Promise<void> {
 
   const urlToAssetId = new Map(assets.map((asset) => [asset.canonicalUrl, asset.assetId]));
   const resolveAssetId = (url: string): string | undefined => urlToAssetId.get(url);
-  // Media docs and migrated items both carry the migration id as their custom text id
-  // (see collections/Media.ts.tpl and emitCmsCollectionFile), so resolving a reference to a
-  // doc id is the identity — there is no separate id map to keep.
+  // Neither media docs nor migrated items carry a custom id (see Media.ts.tpl and
+  // emitCmsCollectionFile) — Payload assigns both, so a reference is resolved through the maps
+  // seedMedia/seedItemsPass1 populate as they go, keyed by the migration's own stable ids.
+  const mediaIds = new Map<string, string | number>();
+  const docIds = new Map<string, string | number>();
   const ctx: SeedCtx = {
     htmlToLexical: (html) => convertHTMLToLexical({ editorConfig, html, JSDOM }),
     resolveAssetId,
-    mediaIdFor: (assetId) => assetId,
-    docIdFor: (_collectionKey, migrationId) => migrationId,
+    mediaIdFor: (assetId) => mediaIds.get(assetId),
+    docIdFor: (collectionKey, migrationId) => docIds.get(`${collectionKey}:${migrationId}`),
     warn,
   };
 
@@ -307,9 +339,9 @@ async function main(): Promise<void> {
     globals,
     resolveAssetId,
   });
-  const mediaCount = await seedMedia(payload, assets, referenced);
-  const pass2 = await seedItemsPass1(payload, collections, contentByCollection, ctx);
-  await seedItemRefsPass2(payload, pass2);
+  const mediaCount = await seedMedia(payload, assets, referenced, mediaIds);
+  const pending = await seedItemsPass1(payload, collections, contentByCollection, docIds, ctx);
+  await seedItemRefsPass2(payload, pending, ctx);
   const pagesCount = await seedPages(payload, layoutFiles, blocks, ctx);
   const seededGlobals = await seedGlobals(payload, globals, ctx);
 
